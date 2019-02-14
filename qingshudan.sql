@@ -1,0 +1,197 @@
+create database qingshudan;
+
+use qingshudan;
+
+CREATE TABLE `user` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用户名',
+	`phone` VARCHAR(15) NOT NULL DEFAULT '' COMMENT '手机号',
+	`avatar` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '头像',
+	`signature` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '签名',
+	`wx_id` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '微信绑定',
+	`qq_id` VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'QQ绑定',
+	`wb_id` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '微博绑定',
+    `fans` INT(11) NOT NULL DEFAULT '0' COMMENT '粉丝数',
+    `followers` INT(11) NOT NULL DEFAULT '0' COMMENT '关注数',
+    `collections` INT(11) NOT NULL DEFAULT '0' COMMENT '收藏数',
+    `writ_reads` INT(11) NOT NULL DEFAULT '0' COMMENT '待看数',
+    `integral` INT(11) NOT NULL DEFAULT '0' COMMENT '积分',
+    `address` VARCHAR(200) NOT NULL DEFAULT '' COMMENT '联系地址',
+	`status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 删除',
+	`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `category` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '类名',
+    `books` INT(11) NOT NULL DEFAULT '0' COMMENT '书本数',
+	`status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 删除',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `book` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '书名',
+    `author` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '作者',
+    `isbn` VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'ISBN',
+    `publisher` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '出版社',
+    `publish_time` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '出版时间',
+    `category_id` INT(11) NOT NULL DEFAULT '0' COMMENT '分类id',
+    `category_name` VARCHAR(20) NOT NULL DEFAULT '' COMMENT '分类名',
+    `pages` INT(11) NOT NULL DEFAULT '0' COMMENT '页数',
+    `price` DECIMAL(10,2) NOT NULL DEFAULT '0.00' COMMENT '定价/最低价',
+    `cover` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '封面',
+    `recommend_des` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '推荐语',
+    `collections` INT(11) NOT NULL DEFAULT '0' COMMENT '收藏数',
+    `shares` INT(11) NOT NULL DEFAULT '0' COMMENT '分享数',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `buy_link` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '购买地址',
+	`status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 删除',
+	`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bill` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`title` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '标题',
+    `books` INT(11) NOT NULL DEFAULT '0' COMMENT '图书数量',
+    `recommend_des` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '推荐语',
+    `collections` INT(11) NOT NULL DEFAULT '0' COMMENT '收藏数',
+    `shares` INT(11) NOT NULL DEFAULT '0' COMMENT '分享数',
+    `comments` INT(11) NOT NULL DEFAULT '0' COMMENT '评论数',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+	`status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 删除',
+	`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `comment` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+	`user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `user_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用户名',
+    `user_avatar` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用户头像',
+    `bill_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书单id',
+    `content` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '内容',
+	`status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0 正常 1 删除',
+	`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+	PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `share` ( 
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `type` INT(11) NOT NULL DEFAULT '0' COMMENT '类型 0 书籍 1书单',
+    `bill_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书单id',
+    `book_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书籍id',
+    `channel` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '分享渠道',
+    `share_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '分享时间',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `attention` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `attention_id` INT(11) NOT NULL DEFAULT '0' COMMENT '关注人id(我关注)',
+    `attentioned_id` INT(11) NOT NULL DEFAULT '0' COMMENT '被关注人id(粉丝)',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0正常 1取消关注' ,
+    `attent_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '关注时间',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `collect`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `type` INT(11) NOT NULL DEFAULT '0' COMMENT '类型 0书籍 1书单',
+    `bill_id` INT(11) NOT NULL DEFAULT '0'  COMMENT '书单id',
+    `book_id` INT(11) NOT NULL DEFAULT '0'  COMMENT '书籍id',
+    `status`  INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0正常 1取消收藏',
+    `collect_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '收藏时间',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `gift`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `img` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '礼物封面图',
+    `title` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '礼物名称',
+    `score` INT(11) NOT NULL DEFAULT '0' COMMENT '积分数',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0正常 1下架',
+    `num` INT(11) NOT NULL DEFAULT '0' COMMENT '兑换次数',
+    `explain` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '说明',
+    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `gift_exchange`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `gift_id` INT(11) NOT NULL DEFAULT '0' COMMENT '礼物id',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0兑换失败 1兑换成功',
+    `num` INT(11) NOT NULL DEFAULT '0' COMMENT '兑换个数',
+    `score` INT(11) NOT NULL DEFAULT '0' COMMENT '积分',
+    `exchange_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '兑换时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `score`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `num` INT(11) NOT NULL DEFAULT '0' COMMENT '积分总数',
+    `remark` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '备注',
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `score_rule`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `type` INT(11) NOT NULL DEFAULT '0' COMMENT '类型 0签到 1任务',
+    `name` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '任务名',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0未完成 1完成',
+    `score` INT(11) NOT NULL DEFAULT '0' COMMENT '积分数',
+    PRIMARY KEY(`id`) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `checkin`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `rule_id` INT(11) NOT NULL DEFAULT '0' COMMENT '规则id',
+    `progress` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '完成进度',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '完成状态 0未完成 1完成',
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `bill_book`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `bill_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书单id',
+    `book_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书籍id',
+    `status` INT(11) NOT NULL DEFAULT '0' COMMENT '状态 0正常 1移除',
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `today_recommend`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `book_id` INT(11) NOT NULL DEFAULT '0' COMMENT '书籍id',
+    `name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '书名',
+    `author` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '作者',
+    `publisher` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '出版社',
+    `publish_time` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '出版时间',
+    `cover` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '封面',
+    `type` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '书籍分类',
+    `recommend_des` VARCHAR(1000) NOT NULL DEFAULT '' COMMENT '推荐语',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `user_phto` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用户头像',
+    `user_name` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '用户名',
+    `num` INT(11) NOT NULL DEFAULT '0' COMMENT '关注数',
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `user_recommend`(
+    `id` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `recommend_id` INT(11) NOT NULL DEFAULT '0' COMMENT '推荐id',
+    `user_id` INT(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+    `hobby` INT(11)NOT NULL DEFAULT '0' COMMENT '兴趣 0不喜欢 1喜欢',
+    `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '时间',
+    PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
