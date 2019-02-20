@@ -3,9 +3,9 @@ const config = {
     database: {
         DATABASE: 'qingshudan',
         USERNAME: 'root',
-        PASSWORD: '18398905637',
+        PASSWORD: '密码',
         PORT: 3306,
-        HOST: '192.168.1.50'
+        HOST: '主机地址'
     },
     EACH_PAGE_NUM: 15
 };
